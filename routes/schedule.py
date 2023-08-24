@@ -81,7 +81,6 @@ def update_schedule(id: int, schedule: Schedule):
         print("Error:", e)
         raise
 
-
 @schedule.get('/schedule/listDate/{dateQuery:path}', tags=["schedule"], response_model=list[Schedule], description="Get all schedule")
 def get_all_schedule(dateQuery: str):
     formatted_date = dateQuery.replace("-", "/")
