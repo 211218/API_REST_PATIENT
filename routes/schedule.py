@@ -80,3 +80,22 @@ def update_schedule(id: int, schedule: Schedule):
     except Exception as e:
         print("Error:", e)
         raise
+
+
+@schedule.get('/schedule/listDate/{dateQuery:path}', tags=["schedule"], response_model=list[Schedule], description="Get all schedule")
+def get_all_schedule(dateQuery: str):
+    formatted_date = dateQuery.replace("-", "/")
+    schedule_rows = conn.execute(
+        schedules.select().where(schedules.c.dateQuery == formatted_date)
+    ).fetchall()
+    schedules_dicts = [row._asdict() for row in schedule_rows]
+    return JSONResponse(content=schedules_dicts)
+
+
+@schedule.get('/schedule/listName/{name:path}', tags=["schedule"], response_model=list[Schedule], description="Get all schedule")
+def get_all_schedule(name: str):
+    schedule_rows = conn.execute(
+        schedules.select().where(schedules.c.name == name)
+    ).fetchall()
+    schedules_dicts = [row._asdict() for row in schedule_rows]
+    return JSONResponse(content=schedules_dicts)
